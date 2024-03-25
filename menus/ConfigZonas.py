@@ -9,6 +9,7 @@ def getZonasData():
     data = peticion.json()
     return data
 
+######################   VALIDACIONES   ######################
 def getZonasID(id):
     peticion = requests.get(f"http://154.38.171.54:5502/zonas/{id}")
     return [peticion.json()] if peticion.ok else []
@@ -24,11 +25,11 @@ def postZona():
     while True:
         try:
   
-            if not nuevaZona.get("id"):
-                last = getZonasData()[-1]
-                id = last.get("id")
-                id = int(id)
-                nuevaZona["id"] = f"{id + 1}"
+            # if not nuevaZona.get("id"):
+            #     last = getZonasData()[-1]
+            #     id = last.get("id")
+            #     id = int(id)
+            #     nuevaZona["id"] = f"{id + 1}"
 
 
             if not nuevaZona.get("nombreZona"):
@@ -82,7 +83,7 @@ Presione enter para continuar.""")
 ##   EDITAR ZONA   ##
 def editarZona():
     id = input(f"""
-Ingrese el id de la zona que desea editar: """)
+Ingrese el id de la zona que desea modificar: """)
     data = getZonasID(id)
     if data:
         while True:

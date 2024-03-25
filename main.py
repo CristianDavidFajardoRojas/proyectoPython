@@ -35,7 +35,7 @@ OPCIONES:
     4. ASIGNACION DE ACTIVOS
     5. REPORTES
     6. MOVIMIENTO DE ACTIVOS
-    7. SALIR      """)
+    7. SALIR     """)
         
             opcion = int(input(f"""
 Seleccione una opcion: """))

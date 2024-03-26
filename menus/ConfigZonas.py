@@ -25,11 +25,11 @@ def postZona():
     while True:
         try:
   
-            # if not nuevaZona.get("id"):
-            #     last = getZonasData()[-1]
-            #     id = last.get("id")
-            #     id = int(id)
-            #     nuevaZona["id"] = f"{id + 1}"
+            if not nuevaZona.get("id"):
+                last = getZonasData()[-1]
+                id = last.get("id")
+                id = int(id)
+                nuevaZona["id"] = f"{id + 1}"
 
 
             if not nuevaZona.get("nombreZona"):
@@ -193,7 +193,7 @@ def getZonaPorTotal(total):
 def menuBuscarZona():
     while True:
         try:
-            os.system("clear")
+            os.system("cls")
             print(f"""
     ____                                _____                        
    / __ )__  ________________ ______   /__  / ____  ____  ____ ______
@@ -239,7 +239,7 @@ Presione enter para continuar.""")
 def menuZonas():
     while True:
         try:
-            os.system("clear")
+            os.system("cls")
             print(f"""
     __  ___                    _____                        
    /  |/  /__  ____  __  __   /__  / ____  ____  ____ ______

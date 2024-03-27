@@ -4,6 +4,8 @@ import re
 from tabulate import tabulate
 import json
 import uuid
+from datetime import datetime
+
 
 def getActivosData():
     peticion = requests.get("http://154.38.171.54:5502/activos")
@@ -53,17 +55,14 @@ Ingrese el id del activo que desea asignar: """)
                     if not diccionario.get("id"):
                         diccionario["NroAsignacion"] = str(uuid.uuid4().hex[:4])
 
-                    if not diccionario.get("Fecha"):
-                        fecha = input(f"""
-Ingrese la fecha de asignacion ( YY-MM-DD ): """)
-                        if re.match(r'^\d{4}-\d{2}-\d{2}$', fecha) is not None:
-                            diccionario["Fecha"] = fecha
-                        else:
-                            raise Exception("Fecha no valida, formato YY-MM-DD.")
+                    if not diccionario.get("FechaAsignacion"):
+                        fecha = datetime.now().strftime('%Y-%m-%d')
+                        diccionario["FechaAsignacion"] = fecha
+        
 
 
 
-                    if not diccionario.get("tipoAsignacion"):
+                    if not diccionario.get("TipoAsignacion"):
                         print(f"""
 ASIGNACION: 
 1. Persona
@@ -71,16 +70,16 @@ ASIGNACION:
                         eleccion = input(f"""
 Seleccione una opcion: """)
                         if eleccion == "1":
-                            diccionario["tipoAsignacion"] = "Personal"
+                            diccionario["TipoAsignacion"] = "Personal"
                         elif eleccion == "2":
-                            diccionario["tipoAsignacion"] = "Zona"
+                            diccionario["TipoAsignacion"] = "Zona"
                         else:
                             raise Exception("Opcion no valida.")
 
 
 
                     if not diccionario.get("AsignadoA"):
-                        if diccionario.get("tipoAsignacion") == "Personal":
+                        if diccionario.get("TipoAsignacion") == "Personal":
                             idPersonal = input(f"""
 Ingrese el id de la persona a la que desea asignar: """)
                             if getPersonalId(idPersonal):
@@ -88,7 +87,7 @@ Ingrese el id de la persona a la que desea asignar: """)
                                 break
                             else:
                                 raise Exception("Id no encontrado.")
-                        if diccionario.get("tipoAsignacion") == "Zona":
+                        if diccionario.get("TipoAsignacion") == "Zona":
                             idPersonal = input(f"""
 Ingrese el id de la zona a la que desea asignar: """)
                             if getZonaId(idPersonal):
@@ -104,7 +103,7 @@ Ingrese el id de la zona a la que desea asignar: """)
             listaDeAsigVacia.append(diccionario)
             diccionarioID = data[0]
             idPersonal = diccionario.get("AsignadoA")
-            if diccionario["tipoAsignacion"] == "Personal":
+            if diccionario["TipoAsignacion"] == "Personal":
                 asd = diccionario["AsignadoA"]
                 personal = getPersonalId(asd)[0]
                 Nombre = personal.get("Nombre")
@@ -149,7 +148,9 @@ Presione enter para continuar.""")
         
         else:
             print(f"""
-SOLO PUEDE ASIGNAR ACTIVOS QUE NO ESTEN ASIGNADOS ( IDESTADO = 0 )""") 
+SOLO PUEDE ASIGNAR ACTIVOS QUE NO ESTEN ASIGNADOS ( IDESTADO = 0 )""")
+            input(f"""
+Presione enter para continuar.""") 
             
     else:
         print(f"""

@@ -1,6 +1,7 @@
 import os
 import requests
 from tabulate import tabulate 
+from datetime import datetime
 
 def getActivosData():
     peticion = requests.get("http://154.38.171.54:5502/activos")

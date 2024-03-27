@@ -4,6 +4,8 @@ import re
 from tabulate import tabulate
 import json
 import uuid
+from datetime import datetime
+
 
 def getActivosData():
     peticion = requests.get("http://154.38.171.54:5502/activos")
@@ -301,28 +303,21 @@ Seleccione una opcion: """)
                     IdQuienRealizaDadoBaja = input(f"""
 Ingrese el id de la persona que da de baja el activo: """)
                     if getPersonalId(IdQuienRealizaDadoBaja):
-                        fecha = input(f"""
-Ingrese la fecha ( YY-MM-DD ): """)
-                        if re.match(r'^\d{4}-\d{2}-\d{2}$', fecha) is not None:
-                            agregarHistorial["NroId"] = str(uuid.uuid4().hex[:4])
-                            agregarHistorial["Fecha"] = fecha
-                            agregarHistorial["tipoMov"] = "2"
-                            agregarHistorial["idRespMov"] = IdQuienRealizaDadoBaja
-                            dictSolo = data[0]
-                            listaDeHistorial = dictSolo["historialActivos"]
-                            listaDeHistorial.append(agregarHistorial)
-                            data[0]["idEstado"] = "2"
-                            requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
-                            print(f"""
+                        fecha = datetime.now().strftime('%Y-%m-%d')
+                        agregarHistorial["NroId"] = str(uuid.uuid4().hex[:4])
+                        agregarHistorial["Fecha"] = fecha
+                        agregarHistorial["tipoMov"] = "2"
+                        agregarHistorial["idRespMov"] = IdQuienRealizaDadoBaja
+                        dictSolo = data[0]
+                        listaDeHistorial = dictSolo["historialActivos"]
+                        listaDeHistorial.append(agregarHistorial)
+                        data[0]["idEstado"] = "2"
+                        requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+                        print(f"""
 Activo dado de baja correctamente.""")
-                            input(f"""
+                        input(f"""
 Presione enter para continuar.""")
-                            break
-                        else:
-                            print(f"""
-Fecha no valida, formato YY-MM-DD.""")
-                            input(f"""
-Presione enter para continuar.""")
+                        break
                     else:
                         print("ID no encontrado en la data de personal.")
                         input(f"""

@@ -4,9 +4,16 @@ import re
 from tabulate import tabulate
 import json
 import uuid
+from datetime import datetime
+
 
 def getPersonalData():
     peticion = requests.get("http://154.38.171.54:5502/personas")
+    data = peticion.json()
+    return data
+
+def getActivosData():
+    peticion = requests.get("http://154.38.171.54:5502/activos")
     data = peticion.json()
     return data
 
@@ -24,6 +31,15 @@ def getEmail(email):
     for val in getPersonalData():
         if val.get("Email") == email:
             return[val]
+        
+def getDataAsigancionesPerosna(id):
+    result = []
+    for val in getActivosData():
+        if val.get("asignaciones"):
+            diccitionarioss = val['asignaciones'][0]
+            if diccitionarioss.get("TipoAsignacion") == "Personal" and diccitionarioss.get("AsignadoA") == id:
+                result.append(diccitionarioss)
+    return result
 
 ######################   FILTROS   ######################
 def getPersonalSegunNombre(nick):
@@ -280,24 +296,30 @@ def deletePersona():
 Ingrese el id de la persona que desea eliminar: """)
     data = getPersonalID(id)
     if data:
-        while True:
-            print(tabulate(data, headers="keys", tablefmt="rounded_grid"))    
-            opcion = input(f"""
+        if not getDataAsigancionesPerosna(id): #CONDICION: 4. NO SE PUEDE ELIMINAR PERSONAS QUE CUENTEN CON ACTIVOS ASIGNADOS.
+            while True:
+                print(tabulate(data, headers="keys", tablefmt="rounded_grid"))    
+                opcion = input(f"""
 Esta seguro que desea eliminar esta persona?
     1. Si
     2. Cancelar
                    
 Seleccione una opcion: """)
     
-            if opcion == "1":
-                requests.delete(f"http://154.38.171.54:5502/personas/{id}")
-                print(f"""
+                if opcion == "1":
+                    requests.delete(f"http://154.38.171.54:5502/personas/{id}")
+                    print(f"""
 Persona eliminada correctamente.""")
-                input(f"""
+                    input(f"""
 Presione enter para continuar.""")
-                break
-            else:
-                break
+                    break
+                else:
+                    break
+        else:
+            print(f"""
+NO SE PUEDE ELIMINAR PERSONAS QUE CUENTEN CON ACTIVOS ASIGNADOS.""")
+            input(f"""
+Presione enter para continuar.""")
     else:
         print(f"""
 El ID ingresado no existe.""")

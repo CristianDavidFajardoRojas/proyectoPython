@@ -3,6 +3,12 @@ import requests
 import re
 from tabulate import tabulate
 import json
+from datetime import datetime
+
+def getActivosData():
+    peticion = requests.get("http://154.38.171.54:5502/activos")
+    data = peticion.json()
+    return data
 
 def getZonasData():
     peticion = requests.get("http://154.38.171.54:5502/zonas")
@@ -18,6 +24,15 @@ def getZonas(zona):
     for val in getZonasData():
         if val.get("nombreZona") == zona:
             return [val]
+
+def getDataAsigancionesZona(id):
+    result = []
+    for val in getActivosData():
+        if val.get("asignaciones"):
+            diccitionarioss = val['asignaciones'][0]
+            if diccitionarioss.get("TipoAsignacion") == "Zona" and diccitionarioss.get("AsignadoA") == id:
+                result.append(diccitionarioss)
+    return result
 
 ##   AREGAR NUEVA ZONA   ##
 def postZona():
@@ -67,8 +82,6 @@ Presione enter para continuar.""")
                 break
             else:
                 raise Exception("Seleccion no valida.")
-                
-            
                 
 
         except Exception as error:
@@ -137,24 +150,29 @@ def deleteZona():
 Ingrese el id de la zona que desea eliminar: """)
     data = getZonasID(id)
     if data:
-        while True:
-            print(tabulate(data, headers="keys", tablefmt="rounded_grid"))    
-            opcion = input(f"""
+        if not getDataAsigancionesZona(id):#CONDICION: 4. NO SE PUEDE ELIMINAR ZONAS QUE CUENTEN CON ACTIVOS ASIGNADOS.
+            while True:
+                print(tabulate(data, headers="keys", tablefmt="rounded_grid"))    
+                opcion = input(f"""
 Esta seguro que desea eliminar esta zona?
     1. Si
     2. Cancelar
                    
 Seleccione una opcion: """)
-    
-            if opcion == "1":
-                peticion = requests.delete(f"http://154.38.171.54:5502/zonas/{id}")
-                print(f"""
+                if opcion == "1":
+                    requests.delete(f"http://154.38.171.54:5502/zonas/{id}")
+                    print(f"""
 Zona eliminada correctamente.""")
-                input(f"""
+                    input(f"""
 Presione enter para continuar.""")
-                break
-            else:
-                break
+                    break
+                else:
+                    break
+        else:
+            print(f"""
+NO SE PUEDE ELIMINAR ZONAS QUE CUENTEN CON ACTIVOS ASIGNADOS.""")
+            input(f"""
+Presione enter para continuar.""")
     else:
         print(f"""
 El ID ingresado no existe.""")

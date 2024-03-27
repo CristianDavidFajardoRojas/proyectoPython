@@ -3,6 +3,7 @@ import requests
 import re
 from tabulate import tabulate
 import json
+import uuid
 
 def getActivosData():
     peticion = requests.get("http://154.38.171.54:5502/activos")
@@ -28,6 +29,11 @@ def getActivosID(id):
     peticion = requests.get(f"http://154.38.171.54:5502/activos/{id}")
     return [peticion.json()] if peticion.ok else []
 
+def getPersonalData():
+    peticion = requests.get("http://154.38.171.54:5502/personas")
+    data = peticion.json()
+    return data
+
 ######################   VALIDACIONES   ######################
 def getNroSerial(Nro):
     for val in getActivosData():
@@ -47,6 +53,11 @@ def getCodCampus(cod):
 def getNroFormu(Nro):
     for val in getActivosData():
         if val.get("NroFormulario") == Nro:
+            return [val]
+
+def getPersonalId(id):
+    for val in getPersonalData():
+        if val.get("id") == id:
             return [val]
 
 ##   AGREGAR NUEVO ACTIVO   ##
@@ -202,6 +213,10 @@ Activo agregado correctamente.""")
 Presione enter para continuar.""")
                 break
             elif opcion == "2":
+                print(f"""
+Se cancelo el envio de activo nuevo""")
+                input(f"""
+Presione enter para continuar.""")
                 break
             else:
                 raise Exception("Seleccion no valida.")
@@ -227,7 +242,7 @@ OPCIONES: """)
 Seleccione una opcion: """))
                 if opcion >= 1 or opcion <= 3: 
                     modificacion = list(data[0].keys())[opcion - 1]
-                    if modificacion == "id":
+                    if modificacion == "id" or modificacion == "idEstado" or modificacion == "historialActivos" or modificacion == "asignaciones":
                         raise Exception(f"La opcion {modificacion} no se puede modificar.")
                     nuevoValor = input(f"""
 Ingrese el nuevo valor para {modificacion}: """)
@@ -282,13 +297,36 @@ Esta seguro que desea dar de baja este Activo?
 Seleccione una opcion: """)
     
                 if opcion == "1":
-                    data[0]["idEstado"] = "2"
-                    requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
-                    print(f"""
+                    agregarHistorial = dict()
+                    IdQuienRealizaDadoBaja = input(f"""
+Ingrese el id de la persona que da de baja el activo: """)
+                    if getPersonalId(IdQuienRealizaDadoBaja):
+                        fecha = input(f"""
+Ingrese la fecha ( YY-MM-DD ): """)
+                        if re.match(r'^\d{4}-\d{2}-\d{2}$', fecha) is not None:
+                            agregarHistorial["NroId"] = str(uuid.uuid4().hex[:4])
+                            agregarHistorial["Fecha"] = fecha
+                            agregarHistorial["tipoMov"] = "2"
+                            agregarHistorial["idRespMov"] = IdQuienRealizaDadoBaja
+                            dictSolo = data[0]
+                            listaDeHistorial = dictSolo["historialActivos"]
+                            listaDeHistorial.append(agregarHistorial)
+                            data[0]["idEstado"] = "2"
+                            requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+                            print(f"""
 Activo dado de baja correctamente.""")
-                    input(f"""
+                            input(f"""
 Presione enter para continuar.""")
-                    break
+                            break
+                        else:
+                            print(f"""
+Fecha no valida, formato YY-MM-DD.""")
+                            input(f"""
+Presione enter para continuar.""")
+                    else:
+                        print("ID no encontrado en la data de personal.")
+                        input(f"""
+Presione enter para continuar.""")
                 else:
                     break
         else:
@@ -430,7 +468,7 @@ def getActivoPorNroItem(NroItem):
             })
     return activo
 
-##   BUSCAR ZONA   ##
+##   BUSCAR ACTIVO   ##
 def menuBuscarActivo():
     while True:
         try:
@@ -497,6 +535,44 @@ Presione enter para continuar.""")
         except Exception as error:
             print(error)
 
+
+
+
+
+def DELETEPROVICIONAL():
+    id = input(f"""
+Ingrese el id de la zona que desea eliminar: """)
+    data = getActivosID(id)
+    if data:
+        while True:
+            print(tabulate(data, headers="keys", tablefmt="rounded_grid"))    
+            opcion = input(f"""
+Esta seguro que desea eliminar esta zona?
+    1. Si
+    2. Cancelar
+                   
+Seleccione una opcion: """)
+    
+            if opcion == "1":
+                peticion = requests.delete(f"http://154.38.171.54:5502/activos/{id}")
+                print(f"""
+Zona eliminada correctamente.""")
+                input(f"""
+Presione enter para continuar.""")
+                break
+            else:
+                break
+    else:
+        print(f"""
+El ID ingresado no existe.""")
+        input(f"""
+Presione enter para continuar.""")
+
+
+
+
+
+
 ##   MENU DE ACTIVOS   ##
 def menuActivos():
     while True:
@@ -526,6 +602,8 @@ Seleccione una opcion: """)
                 deleteActivo()            
             elif opcion == "4":
                 menuBuscarActivo()
+            elif opcion == "99":
+                DELETEPROVICIONAL()
             elif opcion == "5":
                 break
             else:

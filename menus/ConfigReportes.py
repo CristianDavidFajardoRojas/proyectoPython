@@ -7,6 +7,12 @@ def getActivosData():
     data = peticion.json()
     return data
 
+def getCategoriaData():
+    peticion = requests.get("http://154.38.171.54:5502/categoriaActivos")
+    data = peticion.json()
+    return data
+
+######################   FILTROS   ######################
 def getActivoPorNombre():
     activo = list()
     for val in getActivosData():
@@ -27,16 +33,81 @@ def getActivoPorNombre():
             })
     return activo
 
+def getActivoPorCategoria(id):
+    activo = list()
+    for val in getActivosData():
+        if val.get("idCategoria") == id:
+            activo.append({
+                "id": val.get("id"),
+                "Numero Item": val.get("NroItem"),
+                "Numero Serial": val.get("NroSerial"),
+                "Codigo Campus": val.get("CodCampus"),
+                "NroFormulario": val.get("NroFormulario"),
+                "Nombre": val.get("Nombre"),
+                "Proveedor": val.get("Proveedor"),
+                "Empresa Responsable": val.get("EmpresaResponsable"),
+                "ID marca": val.get("idMarca"),
+                "ID Categoria": val.get("idCategoria"),
+                "ID tipo": val.get("idTipo"),
+                "ID estado": val.get("idEstado"),
+                "Valor Unitario": val.get("ValorUnitario"),
+            })
+    return activo
+
+def getActivoDadoDeBaja():
+    activo = list()
+    for val in getActivosData():
+        if val.get("idEstado") == "2":
+            activo.append({
+                "id": val.get("id"),
+                "Numero Item": val.get("NroItem"),
+                "Numero Serial": val.get("NroSerial"),
+                "Codigo Campus": val.get("CodCampus"),
+                "NroFormulario": val.get("NroFormulario"),
+                "Nombre": val.get("Nombre"),
+                "Proveedor": val.get("Proveedor"),
+                "Empresa Responsable": val.get("EmpresaResponsable"),
+                "ID marca": val.get("idMarca"),
+                "ID Categoria": val.get("idCategoria"),
+                "ID tipo": val.get("idTipo"),
+                "ID estado": val.get("idEstado"),
+                "Valor Unitario": val.get("ValorUnitario"),
+            })
+    return activo
+
+def getDataAsiganciones():
+    result = []
+    for val in getActivosData():
+        if val.get("asignaciones"):
+            diccitionarioss = val['asignaciones'][0]
+            diccitionarioss["ID Activo"] = val.get("id")
+            diccitionarioss["Nombre del Activo"] = val.get("Nombre")
+            result.append(diccitionarioss)
+    return result
+
+def getDataHistoriales():
+    result = []
+    for val in getActivosData():
+        if val.get("historialActivos"):
+            for asd in val['historialActivos']:
+                diccitionarioss = asd
+                asd["ID Activo"] = val.get("id")
+                asd["Nombre del Activo"] = val.get("Nombre")
+                result.append(diccitionarioss)
+    return result
+
 def menuReportes():
     while True:
-        os.system("clear")
-        print(f"""
-    __  ___                    ___        __  _                 
-   /  |/  /__  ____  __  __   /   | _____/ /_(_)   ______  _____
-  / /|_/ / _ \/ __ \/ / / /  / /| |/ ___/ __/ / | / / __ \/ ___/
- / /  / /  __/ / / / /_/ /  / ___ / /__/ /_/ /| |/ / /_/ (__  ) 
-/_/  /_/\___/_/ /_/\__,_/  /_/  |_\___/\__/_/ |___/\____/____/  
-                                                                
+        try:
+            os.system("cls")
+            print(f"""
+    __  ___                    ____                        __           
+   /  |/  /__  ____  __  __   / __ \___  ____  ____  _____/ /____  _____
+  / /|_/ / _ \/ __ \/ / / /  / /_/ / _ \/ __ \/ __ \/ ___/ __/ _ \/ ___/
+ / /  / /  __/ / / / /_/ /  / _, _/  __/ /_/ / /_/ / /  / /_/  __(__  ) 
+/_/  /_/\___/_/ /_/\__,_/  /_/ |_|\___/ .___/\____/_/   \__/\___/____/  
+                                     /_/                                
+                                                      
 
 OPCIONES:
 1. LISTAR TODOS LOS ACTIVOS
@@ -45,9 +116,44 @@ OPCIONES:
 4. LISTAR ACTIVOS Y ASIGNACION
 5. LISTAR HISTORIAL DE MOV. DE ACTIVO
 6. REGRESAR AL MENU PRINCIPAL""")
-        opcion = input(f"""
+            opcion = input(f"""
 Seleccione una opcion: """)
-        if opcion == "1":
-            print(tabulate(getActivoPorNombre(), headers="keys", tablefmt="rounded_grid"))
-            input(f"""
+            if opcion == "1":
+                print(tabulate(getActivoPorNombre(), headers="keys", tablefmt="rounded_grid"))
+                input(f"""
 Presione enter para continuar.""")
+            elif opcion == "2":
+                data = getCategoriaData()
+                print(f"""
+CATEGORIAS: """)
+                for val in data:
+                    print(f"{val['id']}. {val['Nombre']}")
+                categoria = input(f"""
+Seleccione una opcion: """) 
+                if categoria not in list(val["id"] for val in data):
+                    raise Exception("Opcion no valida")
+                else:
+                    print(tabulate(getActivoPorCategoria(categoria), headers="keys", tablefmt="rounded_grid"))
+                    input(f"""
+Presione enter para continuar.""")
+                
+            elif opcion == "3":
+                print(tabulate(getActivoDadoDeBaja(), headers="keys", tablefmt="rounded_grid"))
+                input(f"""
+Presione enter para continuar.""")
+                
+            elif opcion == "4":
+                print(tabulate(getDataAsiganciones(), headers="keys", tablefmt="rounded_grid"))
+                input(f"""
+Presione enter para continuar.""")
+            elif opcion == "5":
+                print(tabulate(getDataHistoriales(), headers="keys", tablefmt="rounded_grid"))
+                input(f"""
+Presione enter para continuar.""")
+            elif opcion == "6":
+                break
+                
+
+
+        except Exception as error:
+            print(error)

@@ -3,6 +3,7 @@ import requests
 import re
 from tabulate import tabulate
 import json
+import uuid
 
 def getPersonalData():
     peticion = requests.get("http://154.38.171.54:5502/personas")
@@ -68,7 +69,9 @@ def getPersonalSegunTelefono(tel):
         diccionario1 = lista1[0]
         moviiil = diccionario1["movil"]
         casaaa = diccionario1["casa"]
-        if moviiil.get("num") == tel or casaaa.get("num") == tel:
+        personalll = diccionario1["personal"]
+        oficinaaa = diccionario1["oficina"]
+        if moviiil.get("num") == tel or casaaa.get("num") == tel or personalll.get("num") == tel or oficinaaa.get("num") == tel:
             telefono.append({
                 "ID": val.get("id"),
                 "Nombre": val.get("Nombre"),
@@ -84,13 +87,9 @@ def postPersonal():
     nuevaPersona = dict()
     while True:
         try:
-            last = getPersonalData()[-1]
-            id = last.get("id")
-            id = int(id)
 
             if not nuevaPersona.get("id"):
-                nuevaPersona["id"] = f"{id + 1}"
-
+                nuevaPersona["id"] = str(uuid.uuid4().hex[:4])
 
             if not nuevaPersona.get("nroId (CC, Nit)"):
                 nroCC = input(f"""
@@ -126,27 +125,45 @@ Ingrese el correo electronico: """)
                 
 
             if not nuevaPersona.get("Telefonos"):
-                telMovil = input(f"""
-Ingrese el telefono movil: """)
-                telCasa = input(f"""
-Ingrese el telefono hogar: """)
                 listaASD = [{
                     "movil":{},
-                    "casa":{}
+                    "casa":{},
+                    "personal":{},
+                    "oficina":{}
                 }]
                 diccionarioASD = listaASD[0]
+                telMovil = input(f"""
+Ingrese el telefono movil: """)
                 if re.match(r'^\d{10}$', telMovil) is not None: 
                     diccionarioASD["movil"] = {
-                        "id": f"{id + 1}",
+                        "id": nuevaPersona.get("id"),
                         "num": telMovil}
                 else:
-                    raise Exception("Telofono no valido, ingrese solo 10 digitos numericos.")
+                    raise Exception("Telefono no valido, ingrese solo 10 digitos numericos.")
+                telCasa = input(f"""
+Ingrese el telefono hogar: """)
                 if re.match(r'^\d{10}$', telCasa) is not None:
                     diccionarioASD["casa"] = {
-                        "id": f"{id + 1}",
+                        "id": nuevaPersona.get("id"),
                         "num": telCasa}
                 else:
-                    raise Exception("Telofono no valido, ingrese solo 10 digitos numericos.")
+                    raise Exception("Telefono no valido, ingrese solo 10 digitos numericos.")
+                telPersonal = input(f"""
+Ingrese el telefono personal: """)
+                if re.match(r'^\d{10}$', telPersonal) is not None: 
+                    diccionarioASD["personal"] = {
+                        "id": nuevaPersona.get("id"),
+                        "num": telPersonal}
+                else:
+                    raise Exception("Telefono no valido, ingrese solo 10 digitos numericos.")
+                telOficina = input(f"""
+Ingrese el telefono Oficina: """)
+                if re.match(r'^\d{10}$', telOficina) is not None: 
+                    diccionarioASD["oficina"] = {
+                        "id": nuevaPersona.get("id"),
+                        "num": telOficina}
+                else:
+                    raise Exception("Telefono no valido, ingrese solo 10 digitos numericos.")
                 nuevaPersona["Telefonos"] = listaASD
 
             persona_lista = [nuevaPersona]
@@ -173,6 +190,7 @@ Presione enter para continuar.""")
         except Exception as error:
             print (error)
 
+##   EDITAR PERSONA   ##
 def editarPersonal():
     id = input(f"""
 Ingrese el id del activo que desea modificar: """)
@@ -195,20 +213,28 @@ Seleccione una opcion: """))
                         print(f"""
 OPCIONES DE TELEFONO: 
 1. Movil
-2. Casa""")
+2. Casa
+3. Personal
+4. Oficina""")
                         seleccion = input(f"""
 Seleccione una opcion: """)
-                        if seleccion == "1" or seleccion == "2":
+                        if seleccion == "1" or seleccion == "2" or seleccion == "3" or seleccion == "4":
                             nuevoValor = input(f"""
 Ingrese el nuevo valor para {modificacion}: """)
                             lista1 = data[0]["Telefonos"]
                             diccionario1 = lista1[0]
                             moviiil = diccionario1["movil"]
                             casaaa = diccionario1["casa"]
+                            personaaal = diccionario1["personal"]
+                            oficinaaa = diccionario1["oficina"]
                             if seleccion == "1":
                                 moviiil["num"] = nuevoValor
                             elif seleccion == "2":
                                 casaaa["num"] = nuevoValor
+                            elif seleccion == "3":
+                                personaaal["num"] = nuevoValor
+                            elif seleccion == "4":
+                                oficinaaa["num"] = nuevoValor
                             break
                         else:
                             raise Exception("Seleecion no valida.")
@@ -264,7 +290,7 @@ Esta seguro que desea eliminar esta persona?
 Seleccione una opcion: """)
     
             if opcion == "1":
-                peticion = requests.delete(f"http://154.38.171.54:5502/personas/{id}")
+                requests.delete(f"http://154.38.171.54:5502/personas/{id}")
                 print(f"""
 Persona eliminada correctamente.""")
                 input(f"""

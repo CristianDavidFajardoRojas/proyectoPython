@@ -24,12 +24,6 @@ def postZona():
     nuevaZona = dict()
     while True:
         try:
-  
-            if not nuevaZona.get("id"):
-                last = getZonasData()[-1]
-                id = last.get("id")
-                id = int(id)
-                nuevaZona["id"] = f"{id + 1}"
 
 
             if not nuevaZona.get("nombreZona"):

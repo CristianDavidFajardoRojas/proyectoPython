@@ -48,16 +48,33 @@ def getPersonalSegunNombre(nick):
         if val.get("Nombre") == nick:
             lista1 = val["Telefonos"]
             diccionario1 = lista1[0]
-            moviiil = diccionario1["movil"]
-            casaaa = diccionario1["casa"]
-            nombres.append({
-                "ID": val.get("id"),
-                "Nombre": val.get("Nombre"),
-                "CC o Nit": val.get("nroId (CC, Nit)"),
-                "Email": val.get("Email"),
-                "Telefono Movil": moviiil.get("num"),
-                "Telefono Casa": casaaa.get("num")
+            if diccionario1.get("personal"):
+                moviiil = diccionario1.get("movil")
+                casaaa = diccionario1.get("casa")
+                personalll = diccionario1.get("personal")
+                oficinaaa = diccionario1.get("oficina")
+                nombres.append({
+                    "ID": val.get("id"),
+                    "Nombre": val.get("Nombre"),
+                    "CC o Nit": val.get("nroId (CC, Nit)"),
+                    "Email": val.get("Email"),
+                    "Telefono Movil": moviiil.get("num"),
+                    "Telefono Casa": casaaa.get("num"),
+                    "Telefono Personal": personalll.get("num"),
+                    "Telefono Oficina": oficinaaa.get("num")
+                })
+            else:
+                moviiil = diccionario1.get("movil")
+                casaaa = diccionario1.get("casa")
+                nombres.append({
+                    "ID": val.get("id"),
+                    "Nombre": val.get("Nombre"),
+                    "CC o Nit": val.get("nroId (CC, Nit)"),
+                    "Email": val.get("Email"),
+                    "Telefono Movil": moviiil.get("num"),
+                    "Telefono Casa": casaaa.get("num"),
             })
+        
     return nombres
 
 def getPersonalSegunEmail(email):
@@ -66,15 +83,31 @@ def getPersonalSegunEmail(email):
         if val.get("Email") == email:
             lista1 = val["Telefonos"]
             diccionario1 = lista1[0]
-            moviiil = diccionario1["movil"]
-            casaaa = diccionario1["casa"]
-            emails.append({
-                "ID": val.get("id"),
-                "Nombre": val.get("Nombre"),
-                "CC o Nit": val.get("nroId (CC, Nit)"),
-                "Email": val.get("Email"),
-                "Telefono Movil": moviiil.get("num"),
-                "Telefono Casa": casaaa.get("num")
+            if diccionario1.get("personal"):
+                moviiil = diccionario1.get("movil")
+                casaaa = diccionario1.get("casa")
+                personalll = diccionario1.get("personal")
+                oficinaaa = diccionario1.get("oficina")
+                emails.append({
+                    "ID": val.get("id"),
+                    "Nombre": val.get("Nombre"),
+                    "CC o Nit": val.get("nroId (CC, Nit)"),
+                    "Email": val.get("Email"),
+                    "Telefono Movil": moviiil.get("num"),
+                    "Telefono Casa": casaaa.get("num"),
+                    "Telefono Personal": personalll.get("num"),
+                    "Telefono Oficina": oficinaaa.get("num")
+                })
+            else:
+                moviiil = diccionario1.get("movil")
+                casaaa = diccionario1.get("casa")
+                emails.append({
+                    "ID": val.get("id"),
+                    "Nombre": val.get("Nombre"),
+                    "CC o Nit": val.get("nroId (CC, Nit)"),
+                    "Email": val.get("Email"),
+                    "Telefono Movil": moviiil.get("num"),
+                    "Telefono Casa": casaaa.get("num"),
             })
     return emails
 
@@ -83,19 +116,35 @@ def getPersonalSegunTelefono(tel):
     for val in getPersonalData():
         lista1 = val["Telefonos"]
         diccionario1 = lista1[0]
-        moviiil = diccionario1["movil"]
-        casaaa = diccionario1["casa"]
-        personalll = diccionario1["personal"]
-        oficinaaa = diccionario1["oficina"]
-        if moviiil.get("num") == tel or casaaa.get("num") == tel or personalll.get("num") == tel or oficinaaa.get("num") == tel:
-            telefono.append({
-                "ID": val.get("id"),
-                "Nombre": val.get("Nombre"),
-                "CC o Nit": val.get("nroId (CC, Nit)"),
-                "Email": val.get("Email"),
-                "Telefono Movil": moviiil.get("num"),
-                "Telefono Casa": casaaa.get("num")
-            })
+        if diccionario1.get("personal"):
+            moviiil = diccionario1.get("movil")
+            casaaa = diccionario1.get("casa")
+            personalll = diccionario1.get("personal")
+            oficinaaa = diccionario1.get("oficina")
+            if moviiil.get("num") == tel or casaaa.get("num") == tel or personalll.get("num") == tel or oficinaaa.get("num") == tel:
+                telefono.append({
+                    "ID": val.get("id"),
+                    "Nombre": val.get("Nombre"),
+                    "CC o Nit": val.get("nroId (CC, Nit)"),
+                    "Email": val.get("Email"),
+                    "Telefono Movil": moviiil.get("num"),
+                    "Telefono Casa": casaaa.get("num"),
+                    "Telefono Personal": personalll.get("num"),
+                    "Telefono Oficina": oficinaaa.get("num")
+                })
+        else:
+            moviiil = diccionario1.get("movil")
+            casaaa = diccionario1.get("casa")
+            if moviiil.get("num") == tel or casaaa.get("num") == tel:
+                telefono.append({
+                    "ID": val.get("id"),
+                    "Nombre": val.get("Nombre"),
+                    "CC o Nit": val.get("nroId (CC, Nit)"),
+                    "Email": val.get("Email"),
+                    "Telefono Movil": moviiil.get("num"),
+                    "Telefono Casa": casaaa.get("num"),
+                })
+
     return telefono
 
 ##   AGREGAR NUEVA PERSONA   ##
@@ -330,7 +379,7 @@ Presione enter para continuar.""")
 def menuBuscarPersonal():
     while True:
         try:
-            os.system("cls")
+            os.system("clear")
             print(f"""
     ____                                ____                                   __
    / __ )__  ________________ ______   / __ \___  ______________  ____  ____ _/ /
@@ -381,7 +430,7 @@ Presione enter para continuar.""")
 def menuPersonal():
     while True:
         try:
-            os.system("cls")
+            os.system("clear")
             print(f"""
     __  ___                    ____                                   __
    /  |/  /__  ____  __  __   / __ \___  ______________  ____  ____ _/ /

@@ -205,7 +205,7 @@ def getZonaPorTotal(total):
 def menuBuscarZona():
     while True:
         try:
-            os.system("cls")
+            os.system("clear")
             print(f"""
     ____                                _____                        
    / __ )__  ________________ ______   /__  / ____  ____  ____ ______
@@ -251,7 +251,7 @@ Presione enter para continuar.""")
 def menuZonas():
     while True:
         try:
-            os.system("cls")
+            os.system("clear")
             print(f"""
     __  ___                    _____                        
    /  |/  /__  ____  __  __   /__  / ____  ____  ____ ______

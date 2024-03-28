@@ -100,7 +100,7 @@ def getDataHistoriales():
 def menuReportes():
     while True:
         try:
-            os.system("cls")
+            os.system("clear")
             print(f"""
     __  ___                    ____                        __           
    /  |/  /__  ____  __  __   / __ \___  ____  ____  _____/ /____  _____

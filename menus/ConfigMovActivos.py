@@ -332,8 +332,6 @@ Seleccione una opcion: """)
             if opcion == "1":
                 RetornarActivo()
             elif opcion == "2":
-                id = input(f"""
-Escriba el Numero de la asignacion: """)
                 DarBajaActivo()
             elif opcion == "3":
                 CambiarAsignacion()

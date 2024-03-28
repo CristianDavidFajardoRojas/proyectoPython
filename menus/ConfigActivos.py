@@ -467,7 +467,7 @@ def getActivoPorNroItem(NroItem):
 def menuBuscarActivo():
     while True:
         try:
-            os.system("cls")
+            os.system("clear")
             print(f"""
     ____                                ___        __  _                 
    / __ )__  ________________ ______   /   | _____/ /_(_)   ______  _____
@@ -572,7 +572,7 @@ Presione enter para continuar.""")
 def menuActivos():
     while True:
         try:
-            os.system("cls")
+            os.system("clear")
             print(f"""
     __  ___                    ___        __  _                 
    /  |/  /__  ____  __  __   /   | _____/ /_(_)   ______  _____

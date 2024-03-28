@@ -10,7 +10,7 @@ import menus.ConfigMovActivos as MenMovimientos
 def menu():
     while True:
         try:
-            os.system("cls")
+            os.system("clear")
             print(f"""
    _____ _      __                          _________    ______       
   / ___/(_)____/ /____  ____ ___  ____ _   / ____( _ )  / ____/       

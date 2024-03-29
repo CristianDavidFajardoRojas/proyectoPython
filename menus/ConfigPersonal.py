@@ -6,20 +6,28 @@ import json
 import uuid
 from datetime import datetime
 
+def limpiar_pantalla():
+    sistema_operativo = os.name
+    if sistema_operativo == "posix":  
+        os.system("clear")
+    elif sistema_operativo == "nt":  
+        os.system("cls")
+    else:
+        print("Sistema operativo no compatible")
 
 def getPersonalData():
-    peticion = requests.get("http://154.38.171.54:5502/personas")
+    peticion = requests.get("http://154.38.171.54:5501/personas")
     data = peticion.json()
     return data
 
 def getActivosData():
-    peticion = requests.get("http://154.38.171.54:5502/activos")
+    peticion = requests.get("http://154.38.171.54:5501/activos")
     data = peticion.json()
     return data
 
 ######################   VALIDACIONES   ######################
 def getPersonalID(id):
-    peticion = requests.get(f"http://154.38.171.54:5502/personas/{id}")
+    peticion = requests.get(f"http://154.38.171.54:5501/personas/{id}")
     return [peticion.json()] if peticion.ok else []
     
 def getNroCC(nroCC):
@@ -241,7 +249,7 @@ Ingrese el telefono Oficina: """)
             opcion = input(f"""
 Seleccione una opcion: """)
             if opcion == "1":
-                requests.post("http://154.38.171.54:5502/personas", data=json.dumps(nuevaPersona, indent=4).encode("UTF-8"))
+                requests.post("http://154.38.171.54:5501/personas", data=json.dumps(nuevaPersona, indent=4).encode("UTF-8"))
                 print(f"""
 Persona agregada correctamente.""")
                 input(f"""
@@ -322,7 +330,7 @@ Ingrese el nuevo valor para {modificacion}: """)
                        
 Seleccione una opcion: """)
         if opcion == "1":
-            requests.put(f"http://154.38.171.54:5502/personas/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+            requests.put(f"http://154.38.171.54:5501/personas/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
             print(f"""
 Persona modificada correctamente.""")
             input(f"""
@@ -356,7 +364,7 @@ Esta seguro que desea eliminar esta persona?
 Seleccione una opcion: """)
     
                 if opcion == "1":
-                    requests.delete(f"http://154.38.171.54:5502/personas/{id}")
+                    requests.delete(f"http://154.38.171.54:5501/personas/{id}")
                     print(f"""
 Persona eliminada correctamente.""")
                     input(f"""
@@ -379,7 +387,7 @@ Presione enter para continuar.""")
 def menuBuscarPersonal():
     while True:
         try:
-            os.system("clear")
+            limpiar_pantalla()
             print(f"""
     ____                                ____                                   __
    / __ )__  ________________ ______   / __ \___  ______________  ____  ____ _/ /
@@ -430,7 +438,7 @@ Presione enter para continuar.""")
 def menuPersonal():
     while True:
         try:
-            os.system("clear")
+            limpiar_pantalla()
             print(f"""
     __  ___                    ____                                   __
    /  |/  /__  ____  __  __   / __ \___  ______________  ____  ____ _/ /

@@ -7,10 +7,20 @@ import menus.ConfigAsignacionActivos as MenAsignacion
 import menus.ConfigReportes as MenReportes
 import menus.ConfigMovActivos as MenMovimientos
 
+def limpiar_pantalla():
+    sistema_operativo = os.name
+    if sistema_operativo == "posix":  
+        os.system("clear")
+    elif sistema_operativo == "nt":  
+        os.system("cls")
+    else:
+        print("Sistema operativo no compatible")
+
+
 def menu():
     while True:
         try:
-            os.system("clear")
+            limpiar_pantalla()
             print(f"""
    _____ _      __                          _________    ______       
   / ___/(_)____/ /____  ____ ___  ____ _   / ____( _ )  / ____/       

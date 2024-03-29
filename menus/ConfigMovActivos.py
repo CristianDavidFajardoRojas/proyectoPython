@@ -6,23 +6,31 @@ import json
 import uuid
 from datetime import datetime
 
+def limpiar_pantalla():
+    sistema_operativo = os.name
+    if sistema_operativo == "posix":  
+        os.system("clear")
+    elif sistema_operativo == "nt":  
+        os.system("cls")
+    else:
+        print("Sistema operativo no compatible")
 
 def getActivosData():
-    peticion = requests.get("http://154.38.171.54:5502/activos")
+    peticion = requests.get("http://154.38.171.54:5501/activos")
     data = peticion.json()
     return data
 
 def getPersonalData():
-    peticion = requests.get("http://154.38.171.54:5502/personas")
+    peticion = requests.get("http://154.38.171.54:5501/personas")
     data = peticion.json()
     return data
 
 def getActivosID(id):
-    peticion = requests.get(f"http://154.38.171.54:5502/activos/{id}")
+    peticion = requests.get(f"http://154.38.171.54:5501/activos/{id}")
     return [peticion.json()] if peticion.ok else []
 
 def getZonasData():
-    peticion = requests.get("http://154.38.171.54:5502/zonas")
+    peticion = requests.get("http://154.38.171.54:5501/zonas")
     data = peticion.json()
     return data
 
@@ -44,7 +52,7 @@ def RetornarActivo():
 Ingrese el id del activo que desea retornar: """)
     data = getActivosID(id)
     if data:
-        if data[0]["idEstado"] != "0":  # CONDICION: PARA RETORNAR DEBE ESTAR EN ESTADO "ASIGNADO" (" 1 ")
+        if data[0]["idEstado"] != "0":  # CONDICION: PARA RETORNAR DEBE SER DIFERENTE A ESTADO "NO ASIGNADO" (" 0 ")
             while True:
                 print(tabulate(data, headers="keys", tablefmt="rounded_grid"))    
                 opcion = input(f"""
@@ -69,7 +77,7 @@ Ingrese el id de la persona que hace el retorno: """)
                         listaDeHistorial.append(agregarHistorial)
                         data[0]["idEstado"] = "0"
                         data[0]["asignaciones"] = []
-                        requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+                        requests.put(f"http://154.38.171.54:5501/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
                         print(f"""
 Activo retornado correctamente.""")
                         input(f"""
@@ -122,7 +130,7 @@ Ingrese el id de la persona que da de baja el activo: """)
                         listaDeHistorial = dictSolo["historialActivos"]
                         listaDeHistorial.append(agregarHistorial)
                         data[0]["idEstado"] = "2"
-                        requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+                        requests.put(f"http://154.38.171.54:5501/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
                         print(f"""
 Activo dado de baja correctamente.""")
                         input(f"""
@@ -224,7 +232,7 @@ Ingrese el id de la persona que realiza la Reasignacion: """)
                     listaDeHistorial = dictSolo["historialActivos"]
                     listaDeHistorial.append(agregarHistorial)
                     data[0]["idEstado"] = "1"
-                    requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+                    requests.put(f"http://154.38.171.54:5501/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
                     print(f"""
 Activo Reasignado correctamente.""")
                     input(f"""
@@ -275,7 +283,7 @@ Ingrese el id de la persona que envia el activo a garantia: """)
                         listaDeHistorial = dictSolo["historialActivos"]
                         listaDeHistorial.append(agregarHistorial)
                         data[0]["idEstado"] = "3"
-                        requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+                        requests.put(f"http://154.38.171.54:5501/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
                         print(f"""
 Activo enviado a garantia correctamente.""")
                         input(f"""
@@ -304,7 +312,7 @@ Presione enter para continuar.""")
 def menuMovActivos():
     while True:
         try:
-            os.system("clear")
+            limpiar_pantalla()
             print(f""" 
     __  ___                                                  
    /  |/  /__  ____  __  __                                  

@@ -6,33 +6,41 @@ import json
 import uuid
 from datetime import datetime
 
+def limpiar_pantalla():
+    sistema_operativo = os.name
+    if sistema_operativo == "posix":  
+        os.system("clear")
+    elif sistema_operativo == "nt":  
+        os.system("cls")
+    else:
+        print("Sistema operativo no compatible")
 
 def getActivosData():
-    peticion = requests.get("http://154.38.171.54:5502/activos")
+    peticion = requests.get("http://154.38.171.54:5501/activos")
     data = peticion.json()
     return data
 
 def getMarcasData():
-    peticion = requests.get("http://154.38.171.54:5502/marcas")
+    peticion = requests.get("http://154.38.171.54:5501/marcas")
     data = peticion.json()
     return data
 
 def getCategoriaData():
-    peticion = requests.get("http://154.38.171.54:5502/categoriaActivos")
+    peticion = requests.get("http://154.38.171.54:5501/categoriaActivos")
     data = peticion.json()
     return data
 
 def getTipoData():
-    peticion = requests.get("http://154.38.171.54:5502/tipoActivos")
+    peticion = requests.get("http://154.38.171.54:5501/tipoActivos")
     data = peticion.json()
     return data
 
 def getActivosID(id):
-    peticion = requests.get(f"http://154.38.171.54:5502/activos/{id}")
+    peticion = requests.get(f"http://154.38.171.54:5501/activos/{id}")
     return [peticion.json()] if peticion.ok else []
 
 def getPersonalData():
-    peticion = requests.get("http://154.38.171.54:5502/personas")
+    peticion = requests.get("http://154.38.171.54:5501/personas")
     data = peticion.json()
     return data
 
@@ -208,7 +216,7 @@ Ingrese el valor Unitario del activo: """)
             opcion = input(f"""
 Seleccione una opcion: """)
             if opcion == "1":
-                requests.post("http://154.38.171.54:5502/activos", data=json.dumps(nuevoActivo, indent=4).encode("UTF-8"))
+                requests.post("http://154.38.171.54:5501/activos", data=json.dumps(nuevoActivo, indent=4).encode("UTF-8"))
                 print(f"""
 Activo agregado correctamente.""")
                 input(f"""
@@ -266,7 +274,7 @@ Ingrese el nuevo valor para {modificacion}: """)
                        
 Seleccione una opcion: """)
         if opcion == "1":
-            requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+            requests.put(f"http://154.38.171.54:5501/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
             print(f"""
 Activo modificado correctamente.""")
             input(f"""
@@ -312,7 +320,7 @@ Ingrese el id de la persona que da de baja el activo: """)
                         listaDeHistorial = dictSolo["historialActivos"]
                         listaDeHistorial.append(agregarHistorial)
                         data[0]["idEstado"] = "2"
-                        requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+                        requests.put(f"http://154.38.171.54:5501/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
                         print(f"""
 Activo dado de baja correctamente.""")
                         input(f"""
@@ -467,7 +475,7 @@ def getActivoPorNroItem(NroItem):
 def menuBuscarActivo():
     while True:
         try:
-            os.system("clear")
+            limpiar_pantalla()
             print(f"""
     ____                                ___        __  _                 
    / __ )__  ________________ ______   /   | _____/ /_(_)   ______  _____
@@ -531,48 +539,11 @@ Presione enter para continuar.""")
             print(error)
 
 
-
-
-
-def DELETEPROVICIONAL():
-    id = input(f"""
-Ingrese el id de la zona que desea eliminar: """)
-    data = getActivosID(id)
-    if data:
-        while True:
-            print(tabulate(data, headers="keys", tablefmt="rounded_grid"))    
-            opcion = input(f"""
-Esta seguro que desea eliminar esta zona?
-    1. Si
-    2. Cancelar
-                   
-Seleccione una opcion: """)
-    
-            if opcion == "1":
-                peticion = requests.delete(f"http://154.38.171.54:5502/activos/{id}")
-                print(f"""
-Zona eliminada correctamente.""")
-                input(f"""
-Presione enter para continuar.""")
-                break
-            else:
-                break
-    else:
-        print(f"""
-El ID ingresado no existe.""")
-        input(f"""
-Presione enter para continuar.""")
-
-
-
-
-
-
 ##   MENU DE ACTIVOS   ##
 def menuActivos():
     while True:
         try:
-            os.system("clear")
+            limpiar_pantalla()
             print(f"""
     __  ___                    ___        __  _                 
    /  |/  /__  ____  __  __   /   | _____/ /_(_)   ______  _____
@@ -597,8 +568,6 @@ Seleccione una opcion: """)
                 deleteActivo()            
             elif opcion == "4":
                 menuBuscarActivo()
-            elif opcion == "99":
-                DELETEPROVICIONAL()
             elif opcion == "5":
                 break
             else:

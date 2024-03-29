@@ -3,15 +3,28 @@ import requests
 from tabulate import tabulate 
 from datetime import datetime
 
+def limpiar_pantalla():
+    sistema_operativo = os.name
+    if sistema_operativo == "posix":  
+        os.system("clear")
+    elif sistema_operativo == "nt":  
+        os.system("cls")
+    else:
+        print("Sistema operativo no compatible")
+
 def getActivosData():
-    peticion = requests.get("http://154.38.171.54:5502/activos")
+    peticion = requests.get("http://154.38.171.54:5501/activos")
     data = peticion.json()
     return data
 
 def getCategoriaData():
-    peticion = requests.get("http://154.38.171.54:5502/categoriaActivos")
+    peticion = requests.get("http://154.38.171.54:5501/categoriaActivos")
     data = peticion.json()
     return data
+
+def getActivoslID(id):
+    peticion = requests.get(f"http://154.38.171.54:5501/activos/{id}")
+    return [peticion.json()] if peticion.ok else []
 
 ######################   FILTROS   ######################
 def getActivoPorNombre():
@@ -87,20 +100,19 @@ def getDataAsiganciones():
     return result
 
 def getDataHistoriales():
+    id = input("Escriba el ID del activo que desea conocer el historial: ")
     result = []
-    for val in getActivosData():
+    for val in getActivoslID(id):
         if val.get("historialActivos"):
             for asd in val['historialActivos']:
                 diccitionarioss = asd
-                asd["ID Activo"] = val.get("id")
-                asd["Nombre del Activo"] = val.get("Nombre")
                 result.append(diccitionarioss)
     return result
 
 def menuReportes():
     while True:
         try:
-            os.system("clear")
+            limpiar_pantalla()
             print(f"""
     __  ___                    ____                        __           
    /  |/  /__  ____  __  __   / __ \___  ____  ____  _____/ /____  _____

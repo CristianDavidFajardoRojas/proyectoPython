@@ -5,19 +5,28 @@ from tabulate import tabulate
 import json
 from datetime import datetime
 
+def limpiar_pantalla():
+    sistema_operativo = os.name
+    if sistema_operativo == "posix":  
+        os.system("clear")
+    elif sistema_operativo == "nt":  
+        os.system("cls")
+    else:
+        print("Sistema operativo no compatible")
+
 def getActivosData():
-    peticion = requests.get("http://154.38.171.54:5502/activos")
+    peticion = requests.get("http://154.38.171.54:5501/activos")
     data = peticion.json()
     return data
 
 def getZonasData():
-    peticion = requests.get("http://154.38.171.54:5502/zonas")
+    peticion = requests.get("http://154.38.171.54:5501/zonas")
     data = peticion.json()
     return data
 
 ######################   VALIDACIONES   ######################
 def getZonasID(id):
-    peticion = requests.get(f"http://154.38.171.54:5502/zonas/{id}")
+    peticion = requests.get(f"http://154.38.171.54:5501/zonas/{id}")
     return [peticion.json()] if peticion.ok else []
 
 def getZonas(zona):
@@ -72,7 +81,7 @@ Ingrese la capacidad total: """)
             opcion = input(f"""
 Seleccione una opcion: """)
             if opcion == "1":
-                requests.post("http://154.38.171.54:5502/zonas", data=json.dumps(nuevaZona, indent=4).encode("UTF-8"))
+                requests.post("http://154.38.171.54:5501/zonas", data=json.dumps(nuevaZona, indent=4).encode("UTF-8"))
                 print(f"""
 Zona agregada correctamente.""")
                 input(f"""
@@ -126,7 +135,7 @@ Ingrese el nuevo valor para {modificacion}: """)
                        
 Seleccione una opcion: """)
         if opcion == "1":
-            requests.put(f"http://154.38.171.54:5502/zonas/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+            requests.put(f"http://154.38.171.54:5501/zonas/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
             print(f"""
 Zona modificada correctamente.""")
             input(f"""
@@ -160,7 +169,7 @@ Esta seguro que desea eliminar esta zona?
                    
 Seleccione una opcion: """)
                 if opcion == "1":
-                    requests.delete(f"http://154.38.171.54:5502/zonas/{id}")
+                    requests.delete(f"http://154.38.171.54:5501/zonas/{id}")
                     print(f"""
 Zona eliminada correctamente.""")
                     input(f"""
@@ -205,7 +214,7 @@ def getZonaPorTotal(total):
 def menuBuscarZona():
     while True:
         try:
-            os.system("clear")
+            limpiar_pantalla()
             print(f"""
     ____                                _____                        
    / __ )__  ________________ ______   /__  / ____  ____  ____ ______
@@ -251,7 +260,7 @@ Presione enter para continuar.""")
 def menuZonas():
     while True:
         try:
-            os.system("clear")
+            limpiar_pantalla()
             print(f"""
     __  ___                    _____                        
    /  |/  /__  ____  __  __   /__  / ____  ____  ____ ______

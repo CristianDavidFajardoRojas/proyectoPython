@@ -241,7 +241,7 @@ Funciones para validar la existencia de una zona o de una persona.
 ![image](https://github.com/CristianDavidFajardoRojas/Proyecto-SISTEMA-DE-GESTION-DE-INVENTARIO-CAMPUSLANDS/assets/160773269/d5631b3b-36ad-4053-8c40-7c88849af2d3)
 
 Se solicita al usuario que ingrese el ID del activo que desea retornar. Se verifica que el activo exista y que el estado sea diferente a " No Asigando ". Posteriormente, se cambia el estado del activo a "No asignado" (ID 0) y se procede a mostrar la información del activo. 
-Se consulta al usuario si esta seguro de realizar el cambio. Si la respuesta es si, se pregunta quien realizo el retorno, luego se crea un diccionario al cual se agrega la información para el historial del activo, siendo un movimiento de ID 1 que hace referencia a "Asignacion" ya que no existe un movimiento que sea "Retorno" o "Desasignación".
+Se consulta al usuario si esta seguro de realizar el cambio. Si la respuesta es si, se pregunta quien realizo el retorno, luego se crea un diccionario al cual se agrega la información para el historial del activo, siendo un movimiento de ID 4 que hace referencia a "ReAsignacion" ya que se esta Reasignando el activo a Campus.
 Se envian los cambios y se agrega al historial el movimiento realizado.
 
 ### DAR DE BAJA ACTIVO:

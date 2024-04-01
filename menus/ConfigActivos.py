@@ -16,31 +16,31 @@ def limpiar_pantalla():
         print("Sistema operativo no compatible")
 
 def getActivosData():
-    peticion = requests.get("http://154.38.171.54:5501/activos")
+    peticion = requests.get("http://154.38.171.54:5502/activos")
     data = peticion.json()
     return data
 
 def getMarcasData():
-    peticion = requests.get("http://154.38.171.54:5501/marcas")
+    peticion = requests.get("http://154.38.171.54:5502/marcas")
     data = peticion.json()
     return data
 
 def getCategoriaData():
-    peticion = requests.get("http://154.38.171.54:5501/categoriaActivos")
+    peticion = requests.get("http://154.38.171.54:5502/categoriaActivos")
     data = peticion.json()
     return data
 
 def getTipoData():
-    peticion = requests.get("http://154.38.171.54:5501/tipoActivos")
+    peticion = requests.get("http://154.38.171.54:5502/tipoActivos")
     data = peticion.json()
     return data
 
 def getActivosID(id):
-    peticion = requests.get(f"http://154.38.171.54:5501/activos/{id}")
+    peticion = requests.get(f"http://154.38.171.54:5502/activos/{id}")
     return [peticion.json()] if peticion.ok else []
 
 def getPersonalData():
-    peticion = requests.get("http://154.38.171.54:5501/personas")
+    peticion = requests.get("http://154.38.171.54:5502/personas")
     data = peticion.json()
     return data
 
@@ -69,6 +69,15 @@ def getPersonalId(id):
     for val in getPersonalData():
         if val.get("id") == id:
             return [val]
+
+def getDataHistoriales(id):
+    result = []
+    for val in getActivosID(id):
+        if val.get("historialActivos"):
+            for asd in val['historialActivos']:
+                diccitionarioss = asd
+                result.append(diccitionarioss)
+    return result
 
 ##   AGREGAR NUEVO ACTIVO   ##
 def postActivos():
@@ -216,7 +225,7 @@ Ingrese el valor Unitario del activo: """)
             opcion = input(f"""
 Seleccione una opcion: """)
             if opcion == "1":
-                requests.post("http://154.38.171.54:5501/activos", data=json.dumps(nuevoActivo, indent=4).encode("UTF-8"))
+                requests.post("http://154.38.171.54:5502/activos", data=json.dumps(nuevoActivo, indent=4).encode("UTF-8"))
                 print(f"""
 Activo agregado correctamente.""")
                 input(f"""
@@ -274,7 +283,7 @@ Ingrese el nuevo valor para {modificacion}: """)
                        
 Seleccione una opcion: """)
         if opcion == "1":
-            requests.put(f"http://154.38.171.54:5501/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+            requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
             print(f"""
 Activo modificado correctamente.""")
             input(f"""
@@ -312,7 +321,10 @@ Seleccione una opcion: """)
 Ingrese el id de la persona que da de baja el activo: """)
                     if getPersonalId(IdQuienRealizaDadoBaja):
                         fecha = datetime.now().strftime('%Y-%m-%d')
-                        agregarHistorial["NroId"] = str(uuid.uuid4().hex[:4])
+                        NumeroAsignaciones = len(getDataHistoriales(id))
+                        NumeroAsignacionesMas1 = NumeroAsignaciones + 1
+                        Resultado = str(NumeroAsignacionesMas1)
+                        agregarHistorial["NroId"] = Resultado
                         agregarHistorial["Fecha"] = fecha
                         agregarHistorial["tipoMov"] = "2"
                         agregarHistorial["idRespMov"] = IdQuienRealizaDadoBaja
@@ -320,7 +332,7 @@ Ingrese el id de la persona que da de baja el activo: """)
                         listaDeHistorial = dictSolo["historialActivos"]
                         listaDeHistorial.append(agregarHistorial)
                         data[0]["idEstado"] = "2"
-                        requests.put(f"http://154.38.171.54:5501/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+                        requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
                         print(f"""
 Activo dado de baja correctamente.""")
                         input(f"""

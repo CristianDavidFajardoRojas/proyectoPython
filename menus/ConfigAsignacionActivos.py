@@ -16,21 +16,21 @@ def limpiar_pantalla():
         print("Sistema operativo no compatible")
 
 def getActivosData():
-    peticion = requests.get("http://154.38.171.54:5501/activos")
+    peticion = requests.get("http://154.38.171.54:5502/activos")
     data = peticion.json()
     return data
 
 def getActivosID(id):
-    peticion = requests.get(f"http://154.38.171.54:5501/activos/{id}")
+    peticion = requests.get(f"http://154.38.171.54:5502/activos/{id}")
     return [peticion.json()] if peticion.ok else []
 
 def getPersonalData():
-    peticion = requests.get("http://154.38.171.54:5501/personas")
+    peticion = requests.get("http://154.38.171.54:5502/personas")
     data = peticion.json()
     return data
 
 def getZonasData():
-    peticion = requests.get("http://154.38.171.54:5501/zonas")
+    peticion = requests.get("http://154.38.171.54:5502/zonas")
     data = peticion.json()
     return data
 
@@ -46,7 +46,25 @@ def getZonaId(id):
         if val.get("id") == id:
             return [val]
 
+def getDataHistoriales(id):
+    result = []
+    for val in getActivosID(id):
+        if val.get("historialActivos"):
+            for asd in val['historialActivos']:
+                diccitionarioss = asd
+                result.append(diccitionarioss)
+    return result
 
+
+def getDataHistorialesMov1(id):
+    result = []
+    for val in getActivosID(id):
+        if val.get("historialActivos"):
+            for asd in val['historialActivos']:
+                if asd.get('tipoMov') == "1":
+                    diccitionarioss = asd
+                    result.append(diccitionarioss)
+    return result
 
 ##   CREAR ASIGNACION ( DEBE ESTAR EN NO ASIGNADO ( ID ESATDO = 0 ) )   ##
 def asignarActivo():
@@ -61,7 +79,10 @@ Ingrese el id del activo que desea asignar: """)
             while True:
                 try:
                     if not diccionario.get("id"):
-                        diccionario["NroAsignacion"] = str(uuid.uuid4().hex[:4])
+                        NumeroAsignaciones = len(getDataHistorialesMov1(id))
+                        NumeroAsignacionesMas1 = NumeroAsignaciones + 1
+                        Resultado = str(NumeroAsignacionesMas1)
+                        diccionario["NroAsignacion"] = Resultado
 
                     if not diccionario.get("FechaAsignacion"):
                         fecha = datetime.now().strftime('%Y-%m-%d')
@@ -132,14 +153,17 @@ Seleccione una opcion: """)
                 IdQuienRealizaAsignacion = input(f"""
 Ingrese el id de la persona que realiza la asignacion: """)
                 if getPersonalId(IdQuienRealizaAsignacion):
-                    agregarHistorial["NroId"] = str(uuid.uuid4().hex[:4])
+                    NumeroAsignaciones = len(getDataHistoriales(id))
+                    NumeroAsignacionesMas1 = NumeroAsignaciones + 1
+                    Resultado = str(NumeroAsignacionesMas1)
+                    agregarHistorial["NroId"] = Resultado
                     agregarHistorial["Fecha"] = fecha
                     agregarHistorial["tipoMov"] = "1"
                     agregarHistorial["idRespMov"] = IdQuienRealizaAsignacion
                     dictSolo = data[0]
                     listaDeHistorial = dictSolo["historialActivos"]
                     listaDeHistorial.append(agregarHistorial)
-                    requests.put(f"http://154.38.171.54:5501/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+                    requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
                     print(f"""
 Activo asignado correctamente.""")
                     input(f"""
@@ -156,7 +180,7 @@ Presione enter para continuar.""")
         
         else:
             print(f"""
-SOLO PUEDE ASIGNAR ACTIVOS QUE NO ESTEN ASIGNADOS ( IDESTADO = 0 ) O QUE NO ESTEN DADOS DE BAJA.""")
+SOLO PUEDE ASIGNAR ACTIVOS QUE NO ESTEN ASIGNADOS ( IDESTADO = 0 ) O QUE NO ESTEN DADOS DE BAJA O EN GARANTIA.""")
             input(f"""
 Presione enter para continuar.""") 
             

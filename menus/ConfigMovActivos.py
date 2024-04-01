@@ -16,21 +16,21 @@ def limpiar_pantalla():
         print("Sistema operativo no compatible")
 
 def getActivosData():
-    peticion = requests.get("http://154.38.171.54:5501/activos")
+    peticion = requests.get("http://154.38.171.54:5502/activos")
     data = peticion.json()
     return data
 
 def getPersonalData():
-    peticion = requests.get("http://154.38.171.54:5501/personas")
+    peticion = requests.get("http://154.38.171.54:5502/personas")
     data = peticion.json()
     return data
 
 def getActivosID(id):
-    peticion = requests.get(f"http://154.38.171.54:5501/activos/{id}")
+    peticion = requests.get(f"http://154.38.171.54:5502/activos/{id}")
     return [peticion.json()] if peticion.ok else []
 
 def getZonasData():
-    peticion = requests.get("http://154.38.171.54:5501/zonas")
+    peticion = requests.get("http://154.38.171.54:5502/zonas")
     data = peticion.json()
     return data
 
@@ -45,6 +45,14 @@ def getZonaId(id):
         if val.get("id") == id:
             return [val]
 
+def getDataHistoriales(id):
+    result = []
+    for val in getActivosID(id):
+        if val.get("historialActivos"):
+            for asd in val['historialActivos']:
+                diccitionarioss = asd
+                result.append(diccitionarioss)
+    return result
 
 ##   RETORNO ACTIVO ( ESTADO SIN ASIGNACION )   ##
 def RetornarActivo():
@@ -68,16 +76,19 @@ Seleccione una opcion: """)
 Ingrese el id de la persona que hace el retorno: """)
                     if getPersonalId(IdQuienRealizaRetorno):
                         fecha = datetime.now().strftime('%Y-%m-%d')
-                        agregarHistorial["NroId"] = str(uuid.uuid4().hex[:4])
+                        NumeroAsignaciones = len(getDataHistoriales(id))
+                        NumeroAsignacionesMas1 = NumeroAsignaciones + 1
+                        Resultado = str(NumeroAsignacionesMas1)
+                        agregarHistorial["NroId"] = Resultado
                         agregarHistorial["Fecha"] = fecha
-                        agregarHistorial["tipoMov"] = "1"
+                        agregarHistorial["tipoMov"] = "4"
                         agregarHistorial["idRespMov"] = IdQuienRealizaRetorno
                         dictSolo = data[0]
                         listaDeHistorial = dictSolo["historialActivos"]
                         listaDeHistorial.append(agregarHistorial)
                         data[0]["idEstado"] = "0"
                         data[0]["asignaciones"] = []
-                        requests.put(f"http://154.38.171.54:5501/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+                        requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
                         print(f"""
 Activo retornado correctamente.""")
                         input(f"""
@@ -122,7 +133,10 @@ Seleccione una opcion: """)
 Ingrese el id de la persona que da de baja el activo: """)
                     if getPersonalId(IdQuienRealizaDadoBaja):
                         fecha = datetime.now().strftime('%Y-%m-%d')
-                        agregarHistorial["NroId"] = str(uuid.uuid4().hex[:4])
+                        NumeroAsignaciones = len(getDataHistoriales(id))
+                        NumeroAsignacionesMas1 = NumeroAsignaciones + 1
+                        Resultado = str(NumeroAsignacionesMas1)
+                        agregarHistorial["NroId"] = Resultado
                         agregarHistorial["Fecha"] = fecha
                         agregarHistorial["tipoMov"] = "2"
                         agregarHistorial["idRespMov"] = IdQuienRealizaDadoBaja
@@ -130,7 +144,7 @@ Ingrese el id de la persona que da de baja el activo: """)
                         listaDeHistorial = dictSolo["historialActivos"]
                         listaDeHistorial.append(agregarHistorial)
                         data[0]["idEstado"] = "2"
-                        requests.put(f"http://154.38.171.54:5501/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+                        requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
                         print(f"""
 Activo dado de baja correctamente.""")
                         input(f"""
@@ -224,7 +238,10 @@ Seleccione una opcion: """)
                 IdQuienRealizaDadoBaja = input(f"""
 Ingrese el id de la persona que realiza la Reasignacion: """)
                 if getPersonalId(IdQuienRealizaDadoBaja):
-                    agregarHistorial["NroId"] = str(uuid.uuid4().hex[:4])
+                    NumeroAsignaciones = len(getDataHistoriales(id))
+                    NumeroAsignacionesMas1 = NumeroAsignaciones + 1
+                    Resultado = str(NumeroAsignacionesMas1)
+                    agregarHistorial["NroId"] = Resultado
                     agregarHistorial["Fecha"] = fecha
                     agregarHistorial["tipoMov"] = "4"
                     agregarHistorial["idRespMov"] = IdQuienRealizaDadoBaja
@@ -232,7 +249,7 @@ Ingrese el id de la persona que realiza la Reasignacion: """)
                     listaDeHistorial = dictSolo["historialActivos"]
                     listaDeHistorial.append(agregarHistorial)
                     data[0]["idEstado"] = "1"
-                    requests.put(f"http://154.38.171.54:5501/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+                    requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
                     print(f"""
 Activo Reasignado correctamente.""")
                     input(f"""
@@ -275,7 +292,10 @@ Seleccione una opcion: """)
 Ingrese el id de la persona que envia el activo a garantia: """)
                     if getPersonalId(IdQuienRealizaDadoBaja):
                         fecha = datetime.now().strftime('%Y-%m-%d')
-                        agregarHistorial["NroId"] = str(uuid.uuid4().hex[:4])
+                        NumeroAsignaciones = len(getDataHistoriales(id))
+                        NumeroAsignacionesMas1 = NumeroAsignaciones + 1
+                        Resultado = str(NumeroAsignacionesMas1)
+                        agregarHistorial["NroId"] = Resultado
                         agregarHistorial["Fecha"] = fecha
                         agregarHistorial["tipoMov"] = "3"
                         agregarHistorial["idRespMov"] = IdQuienRealizaDadoBaja
@@ -283,7 +303,7 @@ Ingrese el id de la persona que envia el activo a garantia: """)
                         listaDeHistorial = dictSolo["historialActivos"]
                         listaDeHistorial.append(agregarHistorial)
                         data[0]["idEstado"] = "3"
-                        requests.put(f"http://154.38.171.54:5501/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+                        requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
                         print(f"""
 Activo enviado a garantia correctamente.""")
                         input(f"""

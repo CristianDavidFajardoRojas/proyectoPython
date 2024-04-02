@@ -16,21 +16,21 @@ def limpiar_pantalla():
         print("Sistema operativo no compatible")
 
 def getActivosData():
-    peticion = requests.get("http://154.38.171.54:5502/activos")
+    peticion = requests.get("http://154.38.171.54:5501/activos")
     data = peticion.json()
     return data
 
 def getPersonalData():
-    peticion = requests.get("http://154.38.171.54:5502/personas")
+    peticion = requests.get("http://154.38.171.54:5501/personas")
     data = peticion.json()
     return data
 
 def getActivosID(id):
-    peticion = requests.get(f"http://154.38.171.54:5502/activos/{id}")
+    peticion = requests.get(f"http://154.38.171.54:5501/activos/{id}")
     return [peticion.json()] if peticion.ok else []
 
 def getZonasData():
-    peticion = requests.get("http://154.38.171.54:5502/zonas")
+    peticion = requests.get("http://154.38.171.54:5501/zonas")
     data = peticion.json()
     return data
 
@@ -60,7 +60,7 @@ def RetornarActivo():
 Ingrese el id del activo que desea retornar: """)
     data = getActivosID(id)
     if data:
-        if data[0]["idEstado"] != "0":  # CONDICION: PARA RETORNAR DEBE SER DIFERENTE A ESTADO "NO ASIGNADO" (" 0 ")
+        if data[0]["idEstado"] != "0" and data[0]["idEstado"] != "2":  # CONDICION: PARA RETORNAR DEBE SER DIFERENTE A ESTADO "NO ASIGNADO" (" 0 ")
             while True:
                 print(tabulate(data, headers="keys", tablefmt="rounded_grid"))    
                 opcion = input(f"""
@@ -88,7 +88,7 @@ Ingrese el id de la persona que hace el retorno: """)
                         listaDeHistorial.append(agregarHistorial)
                         data[0]["idEstado"] = "0"
                         data[0]["asignaciones"] = []
-                        requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+                        requests.put(f"http://154.38.171.54:5501/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
                         print(f"""
 Activo retornado correctamente.""")
                         input(f"""
@@ -144,7 +144,7 @@ Ingrese el id de la persona que da de baja el activo: """)
                         listaDeHistorial = dictSolo["historialActivos"]
                         listaDeHistorial.append(agregarHistorial)
                         data[0]["idEstado"] = "2"
-                        requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+                        requests.put(f"http://154.38.171.54:5501/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
                         print(f"""
 Activo dado de baja correctamente.""")
                         input(f"""
@@ -249,7 +249,7 @@ Ingrese el id de la persona que realiza la Reasignacion: """)
                     listaDeHistorial = dictSolo["historialActivos"]
                     listaDeHistorial.append(agregarHistorial)
                     data[0]["idEstado"] = "1"
-                    requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+                    requests.put(f"http://154.38.171.54:5501/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
                     print(f"""
 Activo Reasignado correctamente.""")
                     input(f"""
@@ -276,7 +276,7 @@ def EnviarAGarantia():
 Ingrese el id del activo que desea enviar a garantia: """)
     data = getActivosID(id)
     if data:
-        if not data[0]["asignaciones"]:  # CONDICIONES ESPECIALES: 1. NO SE PUEDE ENVIAR A GARANTIA UN ACTIVO QUE SE ENCUENTRE ASIGNADO A UNA PERSONA O ZONA DE CAMPUS.
+        if not data[0]["asignaciones"] and data[0]["idEstado"] != "2":  # CONDICIONES ESPECIALES: 1. NO SE PUEDE ENVIAR A GARANTIA UN ACTIVO QUE SE ENCUENTRE ASIGNADO A UNA PERSONA O ZONA DE CAMPUS.
             while True:
                 print(tabulate(data, headers="keys", tablefmt="rounded_grid"))    
                 opcion = input(f"""
@@ -303,7 +303,7 @@ Ingrese el id de la persona que envia el activo a garantia: """)
                         listaDeHistorial = dictSolo["historialActivos"]
                         listaDeHistorial.append(agregarHistorial)
                         data[0]["idEstado"] = "3"
-                        requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+                        requests.put(f"http://154.38.171.54:5501/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
                         print(f"""
 Activo enviado a garantia correctamente.""")
                         input(f"""

@@ -16,21 +16,21 @@ def limpiar_pantalla():
         print("Sistema operativo no compatible")
 
 def getActivosData():
-    peticion = requests.get("http://154.38.171.54:5502/activos")
+    peticion = requests.get("http://154.38.171.54:5501/activos")
     data = peticion.json()
     return data
 
 def getActivosID(id):
-    peticion = requests.get(f"http://154.38.171.54:5502/activos/{id}")
+    peticion = requests.get(f"http://154.38.171.54:5501/activos/{id}")
     return [peticion.json()] if peticion.ok else []
 
 def getPersonalData():
-    peticion = requests.get("http://154.38.171.54:5502/personas")
+    peticion = requests.get("http://154.38.171.54:5501/personas")
     data = peticion.json()
     return data
 
 def getZonasData():
-    peticion = requests.get("http://154.38.171.54:5502/zonas")
+    peticion = requests.get("http://154.38.171.54:5501/zonas")
     data = peticion.json()
     return data
 
@@ -163,7 +163,7 @@ Ingrese el id de la persona que realiza la asignacion: """)
                     dictSolo = data[0]
                     listaDeHistorial = dictSolo["historialActivos"]
                     listaDeHistorial.append(agregarHistorial)
-                    requests.put(f"http://154.38.171.54:5502/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
+                    requests.put(f"http://154.38.171.54:5501/activos/{id}", data=json.dumps(data[0], indent=4).encode("UTF-8"))
                     print(f"""
 Activo asignado correctamente.""")
                     input(f"""
@@ -203,7 +203,7 @@ def getDataAsiganciones():
     
 def getAsignacionPorId(id):
     for val in getDataAsiganciones():
-        if val.get("NroAsignacion") == id:
+        if val.get("ID Activo") == id:
             return [val]
 
 
@@ -238,7 +238,7 @@ Seleccione una opcion: """)
                 asignarActivo()
             elif opcion == "2":
                 id = input(f"""
-Escriba el Numero de la asignacion: """)
+Escriba el ID del activo: """)
                 print(tabulate(getAsignacionPorId(id), headers="keys", tablefmt="rounded_grid"))
                 input(f"""
 Presione enter para continuar.""")

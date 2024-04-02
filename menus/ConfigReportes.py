@@ -13,17 +13,17 @@ def limpiar_pantalla():
         print("Sistema operativo no compatible")
 
 def getActivosData():
-    peticion = requests.get("http://154.38.171.54:5502/activos")
+    peticion = requests.get("http://154.38.171.54:5501/activos")
     data = peticion.json()
     return data
 
 def getCategoriaData():
-    peticion = requests.get("http://154.38.171.54:5502/categoriaActivos")
+    peticion = requests.get("http://154.38.171.54:5501/categoriaActivos")
     data = peticion.json()
     return data
 
 def getActivoslID(id):
-    peticion = requests.get(f"http://154.38.171.54:5502/activos/{id}")
+    peticion = requests.get(f"http://154.38.171.54:5501/activos/{id}")
     return [peticion.json()] if peticion.ok else []
 
 ######################   FILTROS   ######################

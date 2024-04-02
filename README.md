@@ -148,6 +148,9 @@ Dependiendo de la opción seleccionada, se dirige al filtro específico que ayud
 
 --------------------------------------------------------------------------------------------------
 ## MENU ZONAS:
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/e991a526-0d6e-4019-99b2-80b63cad16a0)
+
+
 Al comienzo del código, se incluyen las líneas de importación de las herramientas que serán utilizadas en las diversas operaciones a lo largo de la ejecución del programa.
 Estas importaciones aseguran que las funcionalidades necesarias estén disponibles y listas para ser utilizadas en las diferentes partes del código.
 
@@ -166,17 +169,26 @@ Funciones que utilizo en la sección de publicar una nueva zona para prevenir la
 Inicializo un diccionario vacío y solicito la información de la nueva zona, la cual se añadirá al diccionario si cumple con las validaciones requeridas.
 Finalmente, se muestra la información de la zona recién creada y se le pregunta al usuario si desea confirmar el envío de esta nueva información a la base de datos.
 
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/a0e7695a-6a76-4d18-8372-43303b5336c7)
+
+
 ### EDITAR ZONA:
 ![image](https://github.com/CristianDavidFajardoRojas/Proyecto-SISTEMA-DE-GESTION-DE-INVENTARIO-CAMPUSLANDS/assets/160773269/2f84e6b9-b0c5-4633-8989-669157a36f93)
 
 Se pide que ingrese el ID de la zona que desea editar y se valida que la zona exista, se muestra la informacion de la zona y se muestra una tabla para que seleccione que desea editar.
 se pide el nuevo valor y se reemplaza. Al final, se presenta la información actualizada y se consulta al usuario si desea enviar los cambios a la base de datos.
 
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/824ef628-d465-43d0-9872-1a75819a8804)
+
+
 ### ELIMINAR ZONA:
 ![image](https://github.com/CristianDavidFajardoRojas/Proyecto-SISTEMA-DE-GESTION-DE-INVENTARIO-CAMPUSLANDS/assets/160773269/e3b17279-2cd9-4d97-b243-dcbc4f60362e)
 
 Se solicita al usuario que ingrese el ID de la zona que desea eliminar. Se verifica mediante un filtro si esa zona tiene algún activo asignado. Si no tiene ningún activo asignado, se muestra la información de la zona y se solicita confirmación para eliminarla.
 En caso de que tenga un activo asignado, se muestra un mensaje de error y se impide la eliminación de la zona.
+
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/b6d03b65-eb6c-4f7c-b7ab-73c77c2bdbd1)
+
 
 ### BUSCAR ZONA:
 ![image](https://github.com/CristianDavidFajardoRojas/Proyecto-SISTEMA-DE-GESTION-DE-INVENTARIO-CAMPUSLANDS/assets/160773269/916a9eb4-fc0e-43b3-bbc7-513e16a47131)
@@ -187,9 +199,13 @@ Creé un menú visual con distintas opciones que permiten al usuario buscar una 
 
 Dependiendo de la opción seleccionada, se dirige al filtro específico que ayuda a mostrar la zona según el dato ingresado.
 
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/f03de7d7-8625-4901-93e3-8be0e5c2ba23)
 
 --------------------------------------------------------------------------------------------------
 ## MENU ASIGNACIONES:
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/2f65d24b-ead7-46f2-98c0-b241acab3570)
+
+
 Al comienzo del código, se incluyen las líneas de importación de las herramientas que serán utilizadas en las diversas operaciones a lo largo de la ejecución del programa.
 Estas importaciones aseguran que las funcionalidades necesarias estén disponibles y listas para ser utilizadas en las diferentes partes del código.
 
@@ -212,13 +228,20 @@ Se genera un ID automáticamente y se registra la fecha actual. Se consulta al u
 Se pide confirmacion al usuario de realizar la asignacion. Si la respuesta es si, se pregunta quien realizo la asignacion, luego se crea un diccionario al cual se agrega la información para el historial del activo, siendo un movimiento de ID 1 que hace referencia a "Asignacion".
 Se envian los cambios y se agrega al historial el movimiento realizado.
 
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/5d476429-8634-4fe6-8e57-0f66e234e942)
+
+
 ### BUSCAR ASIGNACION:
 ![image](https://github.com/CristianDavidFajardoRojas/Proyecto-SISTEMA-DE-GESTION-DE-INVENTARIO-CAMPUSLANDS/assets/160773269/83458a65-0b73-412d-883d-3fecefa1cd37)
 
-Primero, creé una función que genere una lista con todas las asignaciones registradas. Luego, se implementa otra función que devuelva una lista con la asignación específica según el ID o el número de asignación proporcionado.
+Primero, creé una función que genere una lista con todas las asignaciones registradas. Luego, se implementa otra función que devuelva una lista con la asignación específica según el ID del activo proporcionado.
+
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/d551f32f-8906-4f7c-85c2-1a507b2a4bf0)
 
 --------------------------------------------------------------------------------------------------
 ## MENU REPORTES:
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/3cee074a-07f6-4fad-a17b-e4b6f2ba8d2f)
+
 Al comienzo del código, se incluyen las líneas de importación de las herramientas que serán utilizadas en las diversas operaciones a lo largo de la ejecución del programa.
 Estas importaciones aseguran que las funcionalidades necesarias estén disponibles y listas para ser utilizadas en las diferentes partes del código.
 
@@ -253,6 +276,8 @@ Por último, si selecciona la última opción, se solicitará al usuario que ing
 
 --------------------------------------------------------------------------------------------------
 ## MENU MOVIMIENTO DE ACTIVOS:
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/213a2478-d7c2-4d93-9752-bc051be7df38)
+
 Al comienzo del código, se incluyen las líneas de importación de las herramientas que serán utilizadas en las diversas operaciones a lo largo de la ejecución del programa.
 Estas importaciones aseguran que las funcionalidades necesarias estén disponibles y listas para ser utilizadas en las diferentes partes del código.
 
@@ -277,6 +302,8 @@ Se envian los cambios y se agrega al historial el movimiento realizado.
 Primero, se solicita que ingrese el ID del activo que desea dar de baja y se verifica su existencia y que no tenga una asignación registrada. Se muestra al usuario el activo y se le pregunta si está seguro de que desea darlo de baja. Al confirmar la acción, se pregunta quién está realizando el movimiento.
 El ID ingresado debe estar en la base de datos de personas. Se crea un diccionario al cual se agrega la información para el historial del activo, siendo un movimiento de ID 2 que hace referencia a "Dado de baja". Se envian los cambios y se agrega al historial el movimiento realizado.
 
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/11cf1427-f2db-4f04-9fb5-c0c64f9a434a)
+
 
 ### REASIGNAR:
 ![image](https://github.com/CristianDavidFajardoRojas/Proyecto-SISTEMA-DE-GESTION-DE-INVENTARIO-CAMPUSLANDS/assets/160773269/4eb607d1-58f7-473e-bdd5-aba7ff40d73f)
@@ -286,12 +313,16 @@ se genera un ID automáticamente y se registra la fecha actual. Se consulta al u
 Se muestra la nueva asignacion y se pide confirmacion al usuario de realizar la Reasignacion. Si la respuesta es si, se pregunta quien realizo la Reasignacion, luego se crea un diccionario al cual se agrega la información para el historial del activo, siendo un movimiento de ID 4 que hace referencia a "ReAsignacion".
 Se envian los cambios y se agrega al historial el movimiento realizado.
 
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/333989e8-d245-4b23-91ff-a08c7d879344)
+
 
 ### ENVIAR A GARANTIA:
 ![image](https://github.com/CristianDavidFajardoRojas/Proyecto-SISTEMA-DE-GESTION-DE-INVENTARIO-CAMPUSLANDS/assets/160773269/67d47ceb-51ed-45a5-8718-22f653c6624d)
 
 Primero, se solicita que ingrese el ID del activo que desea enviar a garantia y se verifica su existencia y que no tenga una asignación registrada. Se muestra al usuario el activo y se le pregunta si está seguro de que desea enviarlo a garantia. Al confirmar la acción, se pregunta quién está realizando el movimiento.
 El ID ingresado debe estar en la base de datos de personas. Se crea un diccionario al cual se agrega la información para el historial del activo, siendo un movimiento de ID 3 que hace referencia a "Garantia". Se envian los cambios y se agrega al historial el movimiento realizado.
+
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/072372e0-f1e8-497d-85a4-8873b1058817)
 
 
 

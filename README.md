@@ -1,6 +1,8 @@
 # PROYECTO SISTEMA-DE-GESTION-DE-INVENTARIO-CAMPUSLANDS
 ## MAIN:
 ![image](https://github.com/CristianDavidFajardoRojas/Proyecto-SISTEMA-DE-GESTION-DE-INVENTARIO-CAMPUSLANDS/assets/160773269/dd68fb78-98df-4d00-a3e8-501f3a611353)
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/acebfbda-74fa-4063-bcc7-523ef04b00ee)
+
 
 Este script principal funciona como punto de entrada para el Sistema de Gestión de Activos. 
 Dependiendo de la opción seleccionada por el usuario, lo redireccionará al menú correspondiente.
@@ -8,6 +10,8 @@ Dependiendo de la opción seleccionada por el usuario, lo redireccionará al men
 
 --------------------------------------------------------------------------------------------------
 ## MENU ACTIVOS:
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/44975f12-6330-4522-a4c9-51a1c309c00b)
+
 
 Al comienzo del código, se incluyen las líneas de importación de las herramientas que serán utilizadas en las diversas operaciones a lo largo de la ejecución del programa.
 Estas importaciones aseguran que las funcionalidades necesarias estén disponibles y listas para ser utilizadas en las diferentes partes del código.
@@ -38,6 +42,8 @@ Si falla, es debido a que no se está siguiendo la estructura que debería en el
 
 Al final, se muestra al usuario el activo que acaba de diseñar y se le pregunta si está seguro de enviarlo a la base de datos.
 
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/bc195518-0db1-4575-991b-8fd7a01b4cca)
+
 
 ### EDITAR  ACTIVO:
 ![image](https://github.com/CristianDavidFajardoRojas/Proyecto-SISTEMA-DE-GESTION-DE-INVENTARIO-CAMPUSLANDS/assets/160773269/cdd03065-c775-468c-8593-5228a134d3e2)
@@ -46,6 +52,8 @@ Primero, se solicita que ingrese el ID del activo que desea editar y se verifica
 Luego, se muestra el activo y una tabla para que se seleccione qué desea editar. Si la selección es "ID", "idEstado", "Historial" o "asignaciones", se muestra un error ya que esas claves se editarán de otras maneras.
 Después de seleccionar la opción que desea editar, se solicita al usuario que ingrese el nuevo valor para esa opción. Luego, se muestra cómo quedaría el activo editado. Finalmente, se pregunta si desea guardar la modificación.
 
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/12ae5931-6c19-4f36-bd46-db582dffbb99)
+
 
 ### ELIMINAR ACTIVO ( DAR DE BAJA ):
 ![image](https://github.com/CristianDavidFajardoRojas/Proyecto-SISTEMA-DE-GESTION-DE-INVENTARIO-CAMPUSLANDS/assets/160773269/b5a89ad2-b407-4c10-a701-1fa0454eff34)
@@ -53,6 +61,8 @@ Después de seleccionar la opción que desea editar, se solicita al usuario que 
 
 Primero, se solicita que ingrese el ID del activo que desea dar de baja y se verifica su existencia y que no tenga una asignación registrada. Se muestra al usuario el activo y se le pregunta si está seguro de que desea darlo de baja. Al confirmar la acción, se pregunta quién está realizando el movimiento.
 El ID ingresado debe estar en la base de datos de personas. Se crea un diccionario al cual se agrega la información para el historial del activo, siendo un movimiento de ID 2 que hace referencia a "Dado de baja". Se envian los cambios y se agrega al historial el movimiento realizado.
+
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/315265e5-c8e1-49d0-872f-3bbd0cf94f53)
 
 
 ### BUSCAR ACTIVO:
@@ -64,9 +74,14 @@ Creé un menú visual con distintas opciones que permiten al usuario buscar un a
 
 Dependiendo de la opción seleccionada, se dirige al filtro específico que ayuda a mostrar el activo según el dato ingresado.
 
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/3bd72dab-86b8-43b3-be29-0c960679d52f)
+
 
 --------------------------------------------------------------------------------------------------
 ## MENU PERSONAS:
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/f881499a-54a7-4f37-a1a2-8b0155e7f144)
+
+
 Al comienzo del código, se incluyen las líneas de importación de las herramientas que serán utilizadas en las diversas operaciones a lo largo de la ejecución del programa.
 Estas importaciones aseguran que las funcionalidades necesarias estén disponibles y listas para ser utilizadas en las diferentes partes del código.
 
@@ -90,6 +105,9 @@ Para los teléfonos, establezco la estructura que aparece en el JSON y solicito 
 
 Finalmente, se muestra la información de la persona recién creada y se le pregunta al usuario si desea confirmar el envío de esta nueva información a la base de datos.
 
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/1f737a67-ca0b-4f0c-b751-6630e366d63e)
+
+
 ### EDITAR PERSONA:
 ![image](https://github.com/CristianDavidFajardoRojas/Proyecto-SISTEMA-DE-GESTION-DE-INVENTARIO-CAMPUSLANDS/assets/160773269/4432ac63-87f8-403c-8102-0dc154f5aac8)
 
@@ -103,11 +121,20 @@ Si la opción seleccionada es "Teléfonos", se despliega una lista para elegir q
 
 Al final, se presenta la información actualizada y se consulta al usuario si desea enviar los cambios a la base de datos.
 
+
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/a5dd388c-b0f5-4d6b-92cf-738abd6342fd)
+
+
+
 ### ELIMINAR PERSONA:
 ![image](https://github.com/CristianDavidFajardoRojas/Proyecto-SISTEMA-DE-GESTION-DE-INVENTARIO-CAMPUSLANDS/assets/160773269/7d7069be-e87e-4dcc-bcd6-c8fddf919fcc)
 
 Se solicita al usuario que ingrese el ID de la persona que desea eliminar. Se verifica mediante un filtro si esa persona tiene algún activo asignado. Si no tiene ningún activo asignado, se muestra la información de la persona y se solicita confirmación para eliminarla.
 En caso de que tenga un activo asignado, se muestra un mensaje de error y se impide la eliminación de la persona.
+
+
+![image](https://github.com/CristianDavidFajardoRojas/proyectoPython/assets/160773269/b7d82c08-e7ce-467e-8ac9-a42987684d6d)
+
 
 ### BUSCAR PERSONA:
 ![image](https://github.com/CristianDavidFajardoRojas/Proyecto-SISTEMA-DE-GESTION-DE-INVENTARIO-CAMPUSLANDS/assets/160773269/5ea3d233-02b4-4fc4-9f12-bf3d498bf2ff)
